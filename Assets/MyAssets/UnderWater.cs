@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
 namespace Assets.MyAssets
@@ -12,6 +13,7 @@ namespace Assets.MyAssets
         private Color _underwaterColor;
 
         private UnityStandardAssets.Characters.FirstPerson.FirstPersonController _controller;
+        private Image _breathBar;
 
         // Use this for initialization
         private void Start()
@@ -19,6 +21,7 @@ namespace Assets.MyAssets
             _normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
             _underwaterColor = new Color(0.22f, 0.45f, 0.77f, 0.5f);
             _controller = GameObject.FindObjectOfType<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
+            _breathBar = GameObject.FindObjectOfType<Image>();
         }
 
         // Update is called once per frame
@@ -31,6 +34,11 @@ namespace Assets.MyAssets
             var submerged = position < WaterLevel;
 
             _controller.UpdateUnderWaterStatus(inWater, submerged);
+            var breath = _controller.GetBreath();
+            _breathBar.fillAmount = breath;
+            // Maybe find a better way to hide the bar?
+            if (breath == 1)
+                _breathBar.fillAmount = 0;
 
             // Check if submerge status changed
             if (submerged != _isSubmerged)
@@ -39,8 +47,6 @@ namespace Assets.MyAssets
                 _isSubmerged = position < WaterLevel;
                 UpdateView();
             }
-            print(transform.position.y);
-            print("IN WATER: " + inWater + " SUBMERGED: " + submerged);
         }
 
         private void UpdateView()

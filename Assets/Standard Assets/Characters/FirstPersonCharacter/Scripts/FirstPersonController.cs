@@ -21,6 +21,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private float m_UnderWaterForce;
         [SerializeField] private float m_GravityMultiplier;
         [SerializeField] private float m_UnderWaterGravityMultiplier;
+        [SerializeField] private float m_LungCapacity;
         [SerializeField] private MouseLook m_MouseLook;
         [SerializeField] private bool m_UseFovKick;
         [SerializeField] private FOVKick m_FovKick = new FOVKick();
@@ -47,8 +48,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
+        // Water Stuff
         private bool m_InWater;
         private bool m_Submerged;
+        private float m_Breath = 1;
         private AudioSource m_AudioSource;
 
         // Use this for initialization
@@ -123,12 +126,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     m_MoveDir += Physics.gravity * m_UnderWaterGravityMultiplier * Time.fixedDeltaTime;
                 else
                 {
-                    var c = GameObject.FindGameObjectWithTag("MainCamera");
-                    var camRotation = c.transform.rotation.eulerAngles.x;
+                    var camRotation = m_Camera.transform.rotation.eulerAngles.x;
                     var theta = camRotation <= 90 ? camRotation : camRotation - 360;
                     var yMove = theta / 90 * -1;
                     yMove *= m_Input.y;
                     m_MoveDir.y = (transform.up * yMove).y * speed;
+                }
+
+                if (m_Submerged)
+                {
+                    m_Breath = m_IsWalking ? Mathf.MoveTowards(m_Breath, 0f, Time.deltaTime*m_LungCapacity) : Mathf.MoveTowards(m_Breath, 0f, Time.deltaTime*m_LungCapacity*2);
                 }
             }
             else
@@ -150,10 +157,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
                 }
             }
+
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
             if (!m_Submerged)
+            {
                 ProgressStepCycle(speed);
+                // Breathe!
+                if (m_Breath < 1)
+                    m_Breath = Mathf.MoveTowards(m_Breath, 1f, Time.deltaTime * (m_LungCapacity * 5));
+            }
             UpdateCameraPosition(speed);
 
             m_MouseLook.UpdateCursorLock();
@@ -283,6 +296,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             m_InWater = inWater;
             m_Submerged = submerged;
+        }
+
+        public float GetBreath()
+        {
+            return m_Breath;
         }
     }
 }
