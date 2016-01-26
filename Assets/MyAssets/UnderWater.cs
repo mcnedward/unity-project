@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityStandardAssets.Characters.FirstPerson;
 
 namespace Assets.MyAssets
 {
@@ -21,7 +20,7 @@ namespace Assets.MyAssets
             _normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
             _underwaterColor = new Color(0.22f, 0.45f, 0.77f, 0.5f);
             _controller = GameObject.FindObjectOfType<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
-            _breathBar = GameObject.FindObjectOfType<Image>();
+            _breathBar = GameObject.FindGameObjectWithTag("BreathBar").GetComponent<Image>();
         }
 
         // Update is called once per frame

@@ -48,6 +48,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
+        private float m_Stamina;
         // Water Stuff
         private bool m_InWater;
         private bool m_Submerged;
@@ -150,6 +151,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                         PlayJumpSound();
                         m_Jump = false;
                         m_Jumping = true;
+                        m_Stamina -= m_LungCapacity / 2;
                     }
                 }
                 else
@@ -251,9 +253,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #endif
             // set the desired speed to be walking or running
             if (m_Submerged)
-                speed = m_IsWalking ? m_SwimSpeed : m_QuickSwimSpeed;
+            {
+                speed = m_IsWalking || m_Stamina == 0 ? m_SwimSpeed : m_QuickSwimSpeed;
+            }
             else
-                speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
+            {
+                speed = m_IsWalking || m_Stamina == 0 ? m_WalkSpeed : m_RunSpeed;
+            }
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
@@ -269,6 +275,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
+            // Update stanima
+            // TODO Maybe add a new capacity for stanima?
+            m_Stamina = !m_IsWalking ? Mathf.MoveTowards(m_Stamina, 0f, Time.deltaTime * m_LungCapacity * 2) : m_Stamina = Mathf.MoveTowards(m_Stamina, 1f, Time.deltaTime * m_LungCapacity * 5);
+
         }
 
         private void RotateView()
@@ -298,9 +308,24 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Submerged = submerged;
         }
 
+        public float GetStamina()
+        {
+            return m_Stamina;
+        }
+
         public float GetBreath()
         {
             return m_Breath;
+        }
+
+        public bool IsSprinting()
+        {
+            return !m_IsWalking;
+        }
+
+        public bool IsSubmerged()
+        {
+            return m_Submerged;
         }
     }
 }
