@@ -48,11 +48,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_StepCycle;
         private float m_NextStep;
         private bool m_Jumping;
-        private float m_Stamina;
+        private float m_Stamina = 1f;
         // Water Stuff
         private bool m_InWater;
         private bool m_Submerged;
-        private float m_Breath = 1;
+        private float m_Breath = 1f;
         private AudioSource m_AudioSource;
 
         // Use this for initialization
@@ -151,7 +151,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                         PlayJumpSound();
                         m_Jump = false;
                         m_Jumping = true;
-                        m_Stamina -= m_LungCapacity / 2;
+                        m_Stamina -= m_LungCapacity*2f;
                     }
                 }
                 else
