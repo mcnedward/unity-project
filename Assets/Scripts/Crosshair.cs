@@ -71,6 +71,7 @@ namespace Assets.Scripts
                     if (hit.distance != 0)
                     {
                         // Slide is within range, so DrawSlide!
+                        // TODO Dont allow slide if already sliding
                         _controller.StartSlide(_slidePosition);
                     }
                 }

@@ -220,9 +220,9 @@ namespace Assets.Scripts
 #endif
             // set the desired speed to be walking or running
             if (_submerged)
-                speed = _isWalking || _stamina.GetStamina() == 0 ? _swimSpeed : _quickSwimSpeed;
+                speed = _isWalking || !_stamina.HasStamina() ? _swimSpeed : _quickSwimSpeed;
             else
-                speed = _isWalking || _stamina.GetStamina() == 0 ? _walkSpeed : _runSpeed;
+                speed = _isWalking || !_stamina.HasStamina() ? _walkSpeed : _runSpeed;
 
             _input = new Vector2(horizontal, vertical);
 
@@ -253,15 +253,25 @@ namespace Assets.Scripts
             _endPosition = slidePosition;
         }
 
+
+        private bool _hasSlid = false;
         private void Slide()
         {
             if (!_isSliding) return;
+            // Check if there is enough stamina, and then reduce stamina ONCE!
+            if (!_stamina.CanSlide()) return;
+            if (!_hasSlid) _stamina.Slide();
+            _hasSlid = true;
+
             var timeSinceStarted = Time.time - _timeStartedLerping;
             var percentageOfSlide = timeSinceStarted * _slideSpeed;
 
             transform.position = Vector3.Lerp(_startPosition, _endPosition, percentageOfSlide);
             if (percentageOfSlide >= 1.0f)
+            {
                 _isSliding = false;
+                _hasSlid = false;
+            }
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
