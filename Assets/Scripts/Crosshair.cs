@@ -5,7 +5,6 @@ namespace Assets.Scripts
     public class Crosshair : MonoBehaviour
     {
         private FirstPersonController _controller;
-        private Terrain _terrain;
 
         // Crosshair stuff
         private float _crosshairWidth = 10f;
@@ -17,6 +16,7 @@ namespace Assets.Scripts
         // Determines if the mouse button is still being pressed down
         private bool _buttonDown;
 
+        [SerializeField] private Camera _handCamera;
         [SerializeField] private float _slideRange = 100f;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private GameObject _sphere;
@@ -25,7 +25,6 @@ namespace Assets.Scripts
         void Start()
         {
             _controller = FindObjectOfType<FirstPersonController>();
-            _terrain = FindObjectOfType<Terrain>();
             _lineRenderer = GetComponent<LineRenderer>();
             _lineRenderer.enabled = false;
         }
@@ -36,7 +35,7 @@ namespace Assets.Scripts
             if (_showSlide)
             {
                 print("Mouse down at " + _slidePosition);
-                Slide();
+                DrawSlide();
             }
             else
             {
@@ -49,13 +48,11 @@ namespace Assets.Scripts
             CastRayToTerrain();
         }
 
-        private int x = 0;
-
         private void CastRayToTerrain()
         {
             RaycastHit hit;
             var worldCenter = new Vector3(Screen.width / 2, Screen.height / 2);
-            var ray = Camera.main.ScreenPointToRay(worldCenter);
+            var ray = _handCamera.ScreenPointToRay(worldCenter);
 
             if (Input.GetButtonDown("Fire1") || _buttonDown)
             {
@@ -70,7 +67,7 @@ namespace Assets.Scripts
                 else
                     _showSlide = false;
             }
-            if (Input.GetButtonUp("Fire1") || !_buttonDown)
+            if (Input.GetButtonUp("Fire1"))
             {
                 _buttonDown = false;
                 _showSlide = false;
@@ -78,14 +75,14 @@ namespace Assets.Scripts
                 {
                     if (hit.distance != 0)
                     {
-                        // Slide is within range, so Slide!
-                        //_controller.transform.position = hit.point;
+                        // Slide is within range, so DrawSlide!
+                        _controller.StartSlide(_slidePosition);
                     }
                 }
             }
         }
 
-        private void Slide()
+        private void DrawSlide()
         {
             var y = _slidePosition.y - _controller.transform.position.y;
             var linePoint = new Vector3(0f, y, _slideDistance);

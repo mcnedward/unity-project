@@ -30,11 +30,15 @@ namespace Assets.Scripts
         [SerializeField] private bool _useHeadBob;
         [SerializeField] private CurveControlledBob _headBob = new CurveControlledBob();
         [SerializeField] private LerpControlledBob _jumpBob = new LerpControlledBob();
+        // Slide Stuff
+        [SerializeField] private float _slideSpeed = 20f;
         // Sound Stuff
         [SerializeField] private AudioClip[] _footstepSounds;
         // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip _jumpSound; // the sound played when character leaves the ground.
         [SerializeField] private AudioClip _landSound; // the sound played when character touches back on ground.
+
+        [SerializeField] private Camera _handCamera;
 
         private CharacterController _characterController;
         private CollisionFlags _collisionFlags;
@@ -56,6 +60,11 @@ namespace Assets.Scripts
         private bool _inWater;
         private bool _submerged;
         private float _breath = 1f;
+        // Slide Stuff
+        private Vector3 _startPosition;
+        private Vector3 _endPosition;
+        private bool _isSliding;
+        private float _timeStartedLerping;
 
         // Use this for initialization
         private void Start()
@@ -100,15 +109,9 @@ namespace Assets.Scripts
             }
         }
 
-        private void PlayLandingSound()
-        {
-            _audioSource.clip = _landSound;
-            _audioSource.Play();
-            _nextStep = _stepCycle + .5f;
-        }
-
         private void FixedUpdate()
         {
+            Slide();
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
@@ -176,12 +179,6 @@ namespace Assets.Scripts
             _mouseLook.UpdateCursorLock();
         }
 
-        private void PlayJumpSound()
-        {
-            _audioSource.clip = _jumpSound;
-            _audioSource.Play();
-        }
-
         private void ProgressStepCycle(float speed)
         {
             if (_characterController.velocity.sqrMagnitude > 0 && (_input.x != 0 || _input.y != 0))
@@ -199,22 +196,6 @@ namespace Assets.Scripts
             _nextStep = _stepCycle + _stepInterval;
 
             PlayFootStepAudio();
-        }
-
-        private void PlayFootStepAudio()
-        {
-            if (!_characterController.isGrounded)
-            {
-                return;
-            }
-            // pick & play a random footstep sound from the array,
-            // excluding sound at index 0
-            int n = Random.Range(1, _footstepSounds.Length);
-            _audioSource.clip = _footstepSounds[n];
-            _audioSource.PlayOneShot(_audioSource.clip);
-            // move picked sound to index 0 so it's not picked next time
-            _footstepSounds[n] = _footstepSounds[0];
-            _footstepSounds[0] = _audioSource.clip;
         }
 
         private void UpdateCameraPosition(float speed)
@@ -286,11 +267,32 @@ namespace Assets.Scripts
         private void RotateView()
         {
             _mouseLook.LookRotation(transform, _camera.transform);
+            _mouseLook.LookRotation(transform, _handCamera.transform);
+        }
+
+        public void StartSlide(Vector3 slidePosition)
+        {
+            _isSliding = true;
+            _timeStartedLerping = Time.time;
+            _startPosition = transform.position;
+            _endPosition = slidePosition;
+        }
+
+        private void Slide()
+        {
+            if (!_isSliding) return;
+            var timeSinceStarted = Time.time - _timeStartedLerping;
+            var percentageOfSlide = timeSinceStarted * _slideSpeed;
+
+            transform.position = Vector3.Lerp(_startPosition, _endPosition, percentageOfSlide);
+            if (percentageOfSlide >= 1.0f)
+                _isSliding = false;
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            Rigidbody body = hit.collider.attachedRigidbody;
+            if (_isSliding) return;
+            var body = hit.collider.attachedRigidbody;
             //dont move the rigidbody if the character is on top of it
             if (_collisionFlags == CollisionFlags.Below)
             {
@@ -303,6 +305,39 @@ namespace Assets.Scripts
             }
             body.AddForceAtPosition(_characterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
         }
+
+#region Audio
+
+        private void PlayLandingSound()
+        {
+            if (_isSliding) return;
+            _audioSource.clip = _landSound;
+            _audioSource.Play();
+            _nextStep = _stepCycle + .5f;
+        }
+
+        private void PlayFootStepAudio()
+        {
+            if (_isSliding) return;
+            if (!_characterController.isGrounded) return;
+            // pick & play a random footstep sound from the array,
+            // excluding sound at index 0
+            var n = Random.Range(1, _footstepSounds.Length);
+            _audioSource.clip = _footstepSounds[n];
+            _audioSource.PlayOneShot(_audioSource.clip);
+            // move picked sound to index 0 so it's not picked next time
+            _footstepSounds[n] = _footstepSounds[0];
+            _footstepSounds[0] = _audioSource.clip;
+        }
+
+        private void PlayJumpSound()
+        {
+            if (_isSliding) return;
+            _audioSource.clip = _jumpSound;
+            _audioSource.Play();
+        }
+
+#endregion
 
         public void UpdateUnderWaterStatus(bool inWater, bool submerged)
         {
