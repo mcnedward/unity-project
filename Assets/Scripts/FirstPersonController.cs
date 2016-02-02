@@ -23,22 +23,21 @@ namespace Assets.Scripts
         [SerializeField] private float _quickSwimSpeed = 10f;
         [SerializeField] private float _underWaterForce = 30f;
         [SerializeField] private float _underWaterGravityMultiplier = 0.05f;
-        [SerializeField] private float _lungCapacity = 0.08f;
+        // Slide Stuff
+        [SerializeField] private float _slideSpeed = 20f;
+        // Camera Stuff
         [SerializeField] private MouseLook _mouseLook;
         [SerializeField] private bool _useFovKick;
         [SerializeField] private FOVKick _fovKick = new FOVKick();
         [SerializeField] private bool _useHeadBob;
         [SerializeField] private CurveControlledBob _headBob = new CurveControlledBob();
         [SerializeField] private LerpControlledBob _jumpBob = new LerpControlledBob();
-        // Slide Stuff
-        [SerializeField] private float _slideSpeed = 20f;
+        [SerializeField] private Camera _handCamera;
         // Sound Stuff
         [SerializeField] private AudioClip[] _footstepSounds;
-        // an array of footstep sounds that will be randomly selected from.
+        // An array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip _jumpSound; // the sound played when character leaves the ground.
         [SerializeField] private AudioClip _landSound; // the sound played when character touches back on ground.
-
-        [SerializeField] private Camera _handCamera;
 
         private CharacterController _characterController;
         private CollisionFlags _collisionFlags;
@@ -55,11 +54,10 @@ namespace Assets.Scripts
         // Step Stuff
         private float _stepCycle;
         private float _nextStep;
-        private float _stamina = 1f;
+        private Stamina _stamina;
         // Water Stuff
         private bool _inWater;
         private bool _submerged;
-        private float _breath = 1f;
         // Slide Stuff
         private Vector3 _startPosition;
         private Vector3 _endPosition;
@@ -77,6 +75,7 @@ namespace Assets.Scripts
             _headBob.Setup(_camera, _stepInterval);
             _stepCycle = 0f;
             _nextStep = _stepCycle / 2f;
+            _stamina = GetComponent<Stamina>();
             _jumping = false;
             _audioSource = GetComponent<AudioSource>();
         }
@@ -86,27 +85,22 @@ namespace Assets.Scripts
         {
             RotateView();
 
-            if (!_submerged)
-            {
-                // The jump state needs to read here to make sure it is not missed
-                if (!_jump)
-                {
-                    _jump = CrossPlatformInputManager.GetButtonDown("Jump");
-                }
-                if (!_previouslyGrounded && _characterController.isGrounded)
-                {
-                    StartCoroutine(_jumpBob.DoBobCycle());
-                    PlayLandingSound();
-                    _moveDir.y = 0f;
-                    _jumping = false;
-                }
-                if (!_characterController.isGrounded && !_jumping && _previouslyGrounded)
-                {
-                    _moveDir.y = 0f;
-                }
+            if (_submerged) return;
+            // The jump state needs to read here to make sure it is not missed
+            if (!_jump)
+                _jump = CrossPlatformInputManager.GetButtonDown("Jump");
 
-                _previouslyGrounded = _characterController.isGrounded;
+            if (!_previouslyGrounded && _characterController.isGrounded)
+            {
+                StartCoroutine(_jumpBob.DoBobCycle());
+                PlayLandingSound();
+                _moveDir.y = 0f;
+                _jumping = false;
             }
+            if (!_characterController.isGrounded && !_jumping && _previouslyGrounded)
+                _moveDir.y = 0f;
+
+            _previouslyGrounded = _characterController.isGrounded;
         }
 
         private void FixedUpdate()
@@ -138,11 +132,6 @@ namespace Assets.Scripts
                     yMove *= _input.y;
                     _moveDir.y = (transform.up * yMove).y * speed;
                 }
-
-                if (_submerged)
-                {
-                    _breath = _isWalking ? Mathf.MoveTowards(_breath, 0f, Time.deltaTime * _lungCapacity) : Mathf.MoveTowards(_breath, 0f, Time.deltaTime * _lungCapacity * 2);
-                }
             }
             else
             {
@@ -156,7 +145,7 @@ namespace Assets.Scripts
                         PlayJumpSound();
                         _jump = false;
                         _jumping = true;
-                        _stamina -= _lungCapacity * 2f;
+                        _stamina.Jump();
                     }
                 }
                 else
@@ -168,12 +157,7 @@ namespace Assets.Scripts
             _collisionFlags = _characterController.Move(_moveDir * Time.fixedDeltaTime);
 
             if (!_submerged)
-            {
                 ProgressStepCycle(speed);
-                // Breathe!
-                if (_breath < 1)
-                    _breath = Mathf.MoveTowards(_breath, 1f, Time.deltaTime * (_lungCapacity * 5));
-            }
             UpdateCameraPosition(speed);
 
             _mouseLook.UpdateCursorLock();
@@ -236,20 +220,15 @@ namespace Assets.Scripts
 #endif
             // set the desired speed to be walking or running
             if (_submerged)
-            {
-                speed = _isWalking || _stamina == 0 ? _swimSpeed : _quickSwimSpeed;
-            }
+                speed = _isWalking || _stamina.GetStamina() == 0 ? _swimSpeed : _quickSwimSpeed;
             else
-            {
-                speed = _isWalking || _stamina == 0 ? _walkSpeed : _runSpeed;
-            }
+                speed = _isWalking || _stamina.GetStamina() == 0 ? _walkSpeed : _runSpeed;
+
             _input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
             if (_input.sqrMagnitude > 1)
-            {
                 _input.Normalize();
-            }
 
             // handle speed change to give an fov kick
             // only if the player is going to run, is running and the fovkick is to be used
@@ -258,10 +237,6 @@ namespace Assets.Scripts
                 StopAllCoroutines();
                 StartCoroutine(!_isWalking ? _fovKick.FOVKickUp() : _fovKick.FOVKickDown());
             }
-            // Update stanima
-            // TODO Maybe add a new capacity for stanima?
-            _stamina = !_isWalking ? Mathf.MoveTowards(_stamina, 0f, Time.deltaTime * _lungCapacity * 2) : _stamina = Mathf.MoveTowards(_stamina, 1f, Time.deltaTime * _lungCapacity * 5);
-
         }
 
         private void RotateView()
@@ -343,16 +318,6 @@ namespace Assets.Scripts
         {
             _inWater = inWater;
             _submerged = submerged;
-        }
-
-        public float GetStamina()
-        {
-            return _stamina;
-        }
-
-        public float GetBreath()
-        {
-            return _breath;
         }
 
         public bool IsSprinting()

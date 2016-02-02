@@ -5,7 +5,10 @@ namespace Assets.Scripts
 {
     public class UnderWater : MonoBehaviour
     {
-        public float WaterLevel;
+        [SerializeField] private float _waterLevel;
+        [SerializeField] private float _lungCapacity = 0.08f;
+
+        private float _breath = 1f;
         private bool _isInWater;
         private bool _isSubmerged;
         private Color _normalColor;
@@ -28,24 +31,32 @@ namespace Assets.Scripts
         {
             var position = transform.position.y;
             // You are in water when position - 1 is less than the water level
-            var inWater = position - 0.6 < WaterLevel;
+            var inWater = position - 0.6 < _waterLevel;
             // You are submerged when position is less than the water level
-            var submerged = position < WaterLevel;
+            var submerged = position < _waterLevel;
 
             _controller.UpdateUnderWaterStatus(inWater, submerged);
-            var breath = _controller.GetBreath();
-            _breathBar.fillAmount = breath;
+            _breathBar.fillAmount = _breath;
             // Maybe find a better way to hide the bar?
-            if (breath == 1)
+            if (_breath == 1)
                 _breathBar.fillAmount = 0;
 
             // Check if submerge status changed
             if (submerged != _isSubmerged)
             {
-                _isInWater = position - 1 < WaterLevel;
-                _isSubmerged = position < WaterLevel;
+                _isInWater = position - 1 < _waterLevel;
+                _isSubmerged = position < _waterLevel;
                 UpdateView();
             }
+        }
+
+        private void FixedUpdate()
+        {
+            if (_isSubmerged)
+                _breath = !_controller.IsSprinting() ? Mathf.MoveTowards(_breath, 0f, Time.deltaTime * _lungCapacity) : Mathf.MoveTowards(_breath, 0f, Time.deltaTime * _lungCapacity * 2);
+            else
+                if (_breath < 1)
+                _breath = Mathf.MoveTowards(_breath, 1f, Time.deltaTime * (_lungCapacity * 5));
         }
 
         private void UpdateView()
@@ -62,6 +73,11 @@ namespace Assets.Scripts
                 RenderSettings.fogColor = _normalColor;
                 RenderSettings.fogDensity = 0.002f;
             }
+        }
+
+        public float GetBreath()
+        {
+            return _breath;
         }
     }
 }

@@ -33,14 +33,9 @@ namespace Assets.Scripts
         void Update()
         {
             if (_showSlide)
-            {
-                print("Mouse down at " + _slidePosition);
                 DrawSlide();
-            }
             else
-            {
                 _lineRenderer.enabled = false;
-            }
         }
 
         void FixedUpdate()
