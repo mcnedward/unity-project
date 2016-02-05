@@ -253,7 +253,6 @@ namespace Assets.Scripts
             _endPosition = slidePosition;
         }
 
-
         private bool _hasSlid = false;
         private void Slide()
         {
