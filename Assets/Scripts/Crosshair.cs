@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
@@ -7,24 +6,58 @@ namespace Assets.Scripts
     {
         private float _crosshairWidth = 10f;
         private float _crosshairHeight = 10f;
-        private Image _element;
+        private Elements _hands;
+
+        private int _currentElement;
+        private Elements.Element[] _elementList;
 
         // Use this for initialization
         void Start()
         {
-            _element = GameObject.FindGameObjectWithTag("Element").GetComponent<Image>();
-            _element.color = Color.red;
+            _hands = FindObjectOfType<Elements>();
+            _currentElement = 0;
+            _elementList = new Elements.Element[3];
+            _elementList[0] = Elements.Element.Fire;
+            _elementList[1] = Elements.Element.Ice;
+            _elementList[2] = Elements.Element.Bolt;
         }
 
         // Update is called once per frame
         void Update()
         {
+            var elementIndex = -1;
             if (Input.GetButtonDown("FireElement"))
-                _element.color = Color.red;
+            {
+                elementIndex = 0;
+            }
             if (Input.GetButtonDown("IceElement"))
-                _element.color = Color.blue;
+            {
+                elementIndex = 1;
+            }
             if (Input.GetButtonDown("LightningElement"))
-                _element.color = Color.yellow;
+            {
+                elementIndex = 2;
+            }
+            // Handle mouse wheel scroll
+            var axis = Input.GetAxis("Mouse ScrollWheel");
+            if (axis > 0f)
+            {
+                // Scroll up
+                elementIndex = _currentElement + 1;
+                if (elementIndex > _elementList.Length - 1)
+                    elementIndex = 0;
+            }
+            else if (axis < 0f)
+            {
+                // Scroll down
+                elementIndex = _currentElement - 1;
+                if (elementIndex < 0)
+                    elementIndex = _elementList.Length - 1;
+            }
+            if (elementIndex == -1) return;
+            _currentElement = elementIndex;
+            print(_currentElement);
+            _hands.SetElement(_elementList[_currentElement]);
         }
 
         void OnGUI()
