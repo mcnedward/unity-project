@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Status
 {
+    /// <summary>
+    /// Script for managing player's water status.
+    /// When you are in water and wading, your movement will be slowed.
+    /// The head level will determine if you should be swimming when you are in water.
+    /// If you are submerged, the view should change to show that you are under water.
+    /// </summary>
     public class UnderWater : MonoBehaviour
     {
         [SerializeField] private float _waterLevel;
@@ -11,6 +17,8 @@ namespace Assets.Scripts
         private float _breath = 1f;
         private bool _isInWater;
         private bool _isSubmerged;
+        private bool _isWading;
+        private bool _atHeadLevel;
         private Color _normalColor;
         private Color _underwaterColor;
 
@@ -30,24 +38,20 @@ namespace Assets.Scripts
         private void Update()
         {
             var position = transform.position.y;
-            // You are in water when position - 1 is less than the water level
-            var inWater = position - 0.6 < _waterLevel;
-            // You are submerged when position is less than the water level
-            var submerged = position < _waterLevel;
+            _isInWater = position - 0.3f < _waterLevel;
+            _isWading = position - 0.5f < _waterLevel;
+            _atHeadLevel = position + 0.5f < _waterLevel;
+            var submerged = position + 0.8f < _waterLevel;
 
-            _controller.UpdateUnderWaterStatus(inWater, submerged);
             _breathBar.fillAmount = _breath;
             // Maybe find a better way to hide the bar?
             if (_breath == 1)
                 _breathBar.fillAmount = 0;
 
             // Check if submerge status changed
-            if (submerged != _isSubmerged)
-            {
-                _isInWater = position - 1 < _waterLevel;
-                _isSubmerged = position < _waterLevel;
-                UpdateView();
-            }
+            if (submerged == _isSubmerged) return;
+            _isSubmerged = submerged;
+            UpdateView();
         }
 
         private void FixedUpdate()
@@ -59,6 +63,9 @@ namespace Assets.Scripts
                 _breath = Mathf.MoveTowards(_breath, 1f, Time.deltaTime * (_lungCapacity * 5));
         }
 
+        /// <summary>
+        /// Update the view with a fog if you are under water. This should only be called when your submerge status changed, or only when you go under or above under.
+        /// </summary>
         private void UpdateView()
         {
             if (_isInWater && _isSubmerged)
@@ -78,6 +85,31 @@ namespace Assets.Scripts
         public float GetBreath()
         {
             return _breath;
+        }
+
+        public float GetWaterLevel()
+        {
+            return _waterLevel;
+        }
+
+        public bool IsInWater()
+        {
+            return _isInWater;
+        }
+
+        public bool IsWading()
+        {
+            return _isWading;
+        }
+
+        public bool IsAtHeadLevel()
+        {
+            return _atHeadLevel;
+        }
+
+        public bool IsSubmerged()
+        {
+            return _isSubmerged;
         }
     }
 }

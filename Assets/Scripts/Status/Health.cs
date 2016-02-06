@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Status
 {
+    /// <summary>
+    /// Script for managing the player's health.
+    /// </summary>
     public class Health : MonoBehaviour
     {
         private UnderWater _underWater;

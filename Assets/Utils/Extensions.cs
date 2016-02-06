@@ -4,11 +4,14 @@ namespace Assets.Utils
 {
     public static class Extensions
     {
-        public static void ToggleObjectRenderers(GameObject gameObjectToToggle, bool show)
+        /// <summary>
+        /// Toggles a game object's active status.
+        /// </summary>
+        /// <param name="gameObjectToToggle">The game object to change.</param>
+        /// <param name="show">Whether or not to set is game object as active.</param>
+        public static void ToggleObject(GameObject gameObjectToToggle, bool show)
         {
-            var renderers = gameObjectToToggle.GetComponentsInChildren<Renderer>();
-            foreach (var enchantRenderer in renderers)
-                enchantRenderer.enabled = show;
+            gameObjectToToggle.SetActive(show);
         }
     }
 }

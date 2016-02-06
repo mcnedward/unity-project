@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Element;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -56,7 +57,6 @@ namespace Assets.Scripts
             }
             if (elementIndex == -1) return;
             _currentElement = elementIndex;
-            print(_currentElement);
             _hands.SetElement(_elementList[_currentElement]);
         }
 

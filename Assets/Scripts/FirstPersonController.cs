@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Status;
+using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
@@ -21,6 +22,7 @@ namespace Assets.Scripts
         // Water Stuff
         [SerializeField] private float _swimSpeed = 2f;
         [SerializeField] private float _quickSwimSpeed = 10f;
+        [SerializeField] private float _wadeSpeed = 0.5f;
         [SerializeField] private float _underWaterForce = 30f;
         [SerializeField] private float _underWaterGravityMultiplier = 0.05f;
         // Slide Stuff
@@ -56,13 +58,14 @@ namespace Assets.Scripts
         private float _nextStep;
         private Stamina _stamina;
         // Water Stuff
-        private bool _inWater;
-        private bool _submerged;
+        private UnderWater _underWater;
         // Slide Stuff
         private Vector3 _startPosition;
         private Vector3 _endPosition;
         private bool _isSliding;
         private float _timeStartedLerping;
+        // Mana script, for stopping movement when focusing
+        private Mana _mana;
 
         // Use this for initialization
         private void Start()
@@ -78,17 +81,21 @@ namespace Assets.Scripts
             _stamina = GetComponent<Stamina>();
             _jumping = false;
             _audioSource = GetComponent<AudioSource>();
+            _underWater = FindObjectOfType<UnderWater>();
+            _mana = FindObjectOfType<Mana>();
         }
 
         // Update is called once per frame
         private void Update()
         {
             RotateView();
-
-            if (_submerged) return;
+            if (_underWater.IsSubmerged()) return;
             // The jump state needs to read here to make sure it is not missed
-            if (!_jump)
-                _jump = CrossPlatformInputManager.GetButtonDown("Jump");
+            if (!_mana.IsFocusing())
+                if (!_jump)
+                {
+                    _jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                }
 
             if (!_previouslyGrounded && _characterController.isGrounded)
             {
@@ -105,7 +112,12 @@ namespace Assets.Scripts
 
         private void FixedUpdate()
         {
-            Slide();
+            if (_mana.IsFocusing()) return;
+
+            // Allow for a slide?
+            if (_isSliding)
+                Slide();
+
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
@@ -117,46 +129,20 @@ namespace Assets.Scripts
                 _characterController.height / 2f, ~0, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            _moveDir.x = desiredMove.x * speed;
-            _moveDir.z = desiredMove.z * speed;
-            if (_inWater)
-            {
-                // TODO: Handle controller grounded while in water but not submerged
-                if (_input.x == 0 && _input.y == 0)
-                    _moveDir += Physics.gravity * _underWaterGravityMultiplier * Time.fixedDeltaTime;
-                else
-                {
-                    var camRotation = _camera.transform.rotation.eulerAngles.x;
-                    var theta = camRotation <= 90 ? camRotation : camRotation - 360;
-                    var yMove = theta / 90 * -1;
-                    yMove *= _input.y;
-                    _moveDir.y = (transform.up * yMove).y * speed;
-                }
-            }
-            else
-            {
-                if (_characterController.isGrounded)
-                {
-                    _moveDir.y = -_stickToGroundForce;
+            _moveDir.x = desiredMove.x * (speed * (_underWater.IsWading() ? _wadeSpeed : 1));
+            _moveDir.z = desiredMove.z * (speed * (_underWater.IsWading() ? _wadeSpeed : 1));
 
-                    if (_jump)
-                    {
-                        _moveDir.y = _jumpSpeed;
-                        PlayJumpSound();
-                        _jump = false;
-                        _jumping = true;
-                        _stamina.Jump();
-                    }
-                }
-                else
-                {
-                    _moveDir += Physics.gravity * _gravityMultiplier * Time.fixedDeltaTime;
-                }
-            }
+            var grounded = _characterController.isGrounded;
+            var swimming = _underWater.IsSubmerged() || (_underWater.IsAtHeadLevel() && !grounded);
+
+            if (swimming)
+                Swim(speed);
+            else
+                MoveAndJump();
 
             _collisionFlags = _characterController.Move(_moveDir * Time.fixedDeltaTime);
 
-            if (!_submerged)
+            if (!_underWater.IsSubmerged())
                 ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
 
@@ -219,7 +205,7 @@ namespace Assets.Scripts
             _isWalking = !Input.GetKey(KeyCode.LeftShift);
 #endif
             // set the desired speed to be walking or running
-            if (_submerged)
+            if (_underWater.IsSubmerged())
                 speed = _isWalking || !_stamina.HasStamina() ? _swimSpeed : _quickSwimSpeed;
             else
                 speed = _isWalking || !_stamina.HasStamina() ? _walkSpeed : _runSpeed;
@@ -244,6 +230,45 @@ namespace Assets.Scripts
             _mouseLook.LookRotation(transform, _camera.transform);
             _mouseLook.LookRotation(transform, _handCamera.transform);
         }
+        
+        /// <summary>
+        /// Allows for the character to move in a swimming moment.
+        /// </summary>
+        /// <param name="speed"></param>
+        private void Swim(float speed)
+        {
+            // TODO: Handle controller grounded while in water but not submerged
+            if (_input.x == 0 && _input.y == 0)
+                _moveDir += Physics.gravity * _underWaterGravityMultiplier * Time.fixedDeltaTime;
+            else if (transform.position.y < _underWater.GetWaterLevel())
+            {
+                var camRotation = _camera.transform.rotation.eulerAngles.x;
+                var theta = camRotation <= 90 ? camRotation : camRotation - 360;
+                var yMove = theta / 90 * -1;
+                yMove *= _input.y;
+                _moveDir.y = (transform.up * yMove).y * speed;
+            }
+        }
+
+        /// <summary>
+        /// Moves the character and checks if a jump has occured.
+        /// </summary>
+        private void MoveAndJump()
+        {
+            if (_characterController.isGrounded)
+            {
+                _moveDir.y = -_stickToGroundForce;
+
+                if (!_jump) return;
+                _moveDir.y = _jumpSpeed;
+                PlayJumpSound();
+                _jump = false;
+                _jumping = true;
+                _stamina.Jump();
+            }
+            else
+                _moveDir += Physics.gravity * _gravityMultiplier * Time.fixedDeltaTime;
+        }
 
         public void StartSlide(Vector3 slidePosition)
         {
@@ -253,10 +278,12 @@ namespace Assets.Scripts
             _endPosition = slidePosition;
         }
 
-        private bool _hasSlid = false;
+        private bool _hasSlid;
+        /// <summary>
+        /// Slide the character. This will move the character over a certain amount of time in the Side action.
+        /// </summary>
         private void Slide()
         {
-            if (!_isSliding) return;
             // Check if there is enough stamina, and then reduce stamina ONCE!
             if (!_stamina.CanSlide()) return;
             if (!_hasSlid) _stamina.Slide();
@@ -266,11 +293,10 @@ namespace Assets.Scripts
             var percentageOfSlide = timeSinceStarted * _slideSpeed;
 
             transform.position = Vector3.Lerp(_startPosition, _endPosition, percentageOfSlide);
-            if (percentageOfSlide >= 1.0f)
-            {
-                _isSliding = false;
-                _hasSlid = false;
-            }
+
+            if (!(percentageOfSlide >= 1.0f)) return;
+            _isSliding = false;
+            _hasSlid = false;
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -323,20 +349,9 @@ namespace Assets.Scripts
 
 #endregion
 
-        public void UpdateUnderWaterStatus(bool inWater, bool submerged)
-        {
-            _inWater = inWater;
-            _submerged = submerged;
-        }
-
         public bool IsSprinting()
         {
             return !_isWalking;
-        }
-
-        public bool IsSubmerged()
-        {
-            return _submerged;
         }
     }
 }

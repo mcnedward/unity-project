@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using Assets.Utils;
+using UnityEngine;
 
 namespace Assets.Scripts.Element
 {
+    /// <summary>
+    /// The script for the enchant, or the indicator showing where the player will cast a spell.
+    /// </summary>
     public class Enchant : MonoBehaviour
     {
         [SerializeField] private GameObject _fireEnchant;
@@ -18,26 +22,29 @@ namespace Assets.Scripts.Element
             _fireEnchant = Instantiate(_fireEnchant);
             _iceEnchant = Instantiate(_iceEnchant);
             _boltEnchant = Instantiate(_boltEnchant);
-            ToggleObjectRenderers(_iceEnchant, false);
-            ToggleObjectRenderers(_boltEnchant, false);
+            Extensions.ToggleObject(_iceEnchant, false);
+            Extensions.ToggleObject(_boltEnchant, false);
             _enchant = _fireEnchant;
         }
 
+        /// <summary>
+        /// Toggles the enchantment on or off.
+        /// </summary>
+        /// <param name="position">The position of the enchantment.</param>
+        /// <param name="show">Whether to show the enchantment or not.</param>
         public void ToggleEnchant(Vector3 position, bool show)
         {
-            ToggleObjectRenderers(_enchant, show);
+            Extensions.ToggleObject(_enchant, show);
             _enchant.transform.position = position;
         }
 
-        private void ToggleObjectRenderers(GameObject gameObjectToToggle, bool show)
-        {
-            var renderers = gameObjectToToggle.GetComponentsInChildren<Renderer>();
-            foreach (var enchantRenderer in renderers)
-                enchantRenderer.enabled = show;
-        }
-
+        /// <summary>
+        /// Sets the currently selected element.
+        /// </summary>
+        /// <param name="element">The current element.</param>
         public void SetElement(Elements.Element element)
         {
+            Extensions.ToggleObject(_enchant, false);
             _element = element;
             switch (element)
             {
@@ -54,6 +61,7 @@ namespace Assets.Scripts.Element
                     _enchant = _fireEnchant;
                     break;
             }
+            Extensions.ToggleObject(_enchant, false);
         }
     }
 }

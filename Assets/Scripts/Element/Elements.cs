@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Element;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Element
 {
     public class Elements : MonoBehaviour
     {
@@ -55,6 +54,9 @@ namespace Assets.Scripts
             CastRayToTerrain();
         }
 
+        /// <summary>
+        /// Do the action for the currently selected hand spell.
+        /// </summary>
         private void HandAction()
         {
             if (!_doAction) return;
@@ -62,6 +64,9 @@ namespace Assets.Scripts
             _doAction = false;
         }
 
+        /// <summary>
+        /// Checks if input has occured, and determines where the user is pointing with the mouse.
+        /// </summary>
         private void CastRayToTerrain()
         {
             RaycastHit hit;
@@ -93,6 +98,10 @@ namespace Assets.Scripts
             }
         }
 
+        /// <summary>
+        /// Set the currently selected element, and set it in the Hand position.
+        /// </summary>
+        /// <param name="element">The newly selected element.</param>
         public void SetElement(Element element)
         {
             _element.ToggleElement(false);
