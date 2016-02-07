@@ -28,6 +28,14 @@ namespace Assets.Scripts.Status
             if (_underWater.GetBreath() == 0)
                 _currentHealth = Mathf.MoveTowards(_currentHealth, 0, Time.deltaTime * 0.1f);
             _healthBar.fillAmount = _currentHealth;
+
+            if (Input.GetKeyDown("h"))
+                _currentHealth = 1f;
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _currentHealth -= damage;
         }
     }
 }

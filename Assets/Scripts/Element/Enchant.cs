@@ -1,4 +1,4 @@
-﻿using Assets.Utils;
+﻿using Assets.Scripts.Utils;
 using UnityEngine;
 
 namespace Assets.Scripts.Element
@@ -44,7 +44,8 @@ namespace Assets.Scripts.Element
         /// <param name="element">The current element.</param>
         public void SetElement(Elements.Element element)
         {
-            Extensions.ToggleObject(_enchant, false);
+            if (_enchant != null)
+                Extensions.ToggleObject(_enchant, false);
             _element = element;
             switch (element)
             {

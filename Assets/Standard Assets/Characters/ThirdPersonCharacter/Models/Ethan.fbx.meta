@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: b235179bd2a63d1468dd430670338c55
+timeCreated: 1454798602
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -363,10 +365,12 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleRotations: 1
-    optimizeGameObjects: 0
+    optimizeGameObjects: 1
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nDefault bone length found in this file is different
+      form the one found in the source avatar:\n\t'EthanLeftLeg' : position error
+      = 3.271857 mm\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 3
@@ -374,7 +378,8 @@ ModelImporter:
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
-    extraExposedTransformPaths: []
+    extraExposedTransformPaths:
+    - EthanSkeleton/EthanHips/EthanSpine/EthanSpine1/EthanSpine2/EthanNeck/EthanRightShoulder/EthanRightArm/EthanRightForeArm/EthanRightHand
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -1246,7 +1251,7 @@ ModelImporter:
       rotation: {x: 0.000000022965732, y: -6.64365e-14, z: 0.00000011919623, w: 1}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
-    armTwist: 0.5
+    armTwist: 0.494
     foreArmTwist: 0.5
     upperLegTwist: 0.5
     legTwist: 0.5

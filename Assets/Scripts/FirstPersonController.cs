@@ -280,7 +280,7 @@ namespace Assets.Scripts
 
         private bool _hasSlid;
         /// <summary>
-        /// Slide the character. This will move the character over a certain amount of time in the Side action.
+        /// Slide the character. This will move the Character over a certain amount of time in the Side action.
         /// </summary>
         private void Slide()
         {

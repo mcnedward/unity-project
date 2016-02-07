@@ -7,37 +7,59 @@ namespace UnityStandardAssets.Characters.ThirdPerson
     [RequireComponent(typeof (ThirdPersonCharacter))]
     public class AICharacterControl : MonoBehaviour
     {
-        public NavMeshAgent agent { get; private set; }             // the navmesh agent required for the path finding
-        public ThirdPersonCharacter character { get; private set; } // the character we are controlling
-        public Transform target;                                    // target to aim for
+        public NavMeshAgent Agent { get; private set; }             // the navmesh Agent required for the path finding
+        public ThirdPersonCharacter Character { get; private set; } // the Character we are controlling
+        public Transform Target;                                  // target to aim for
 
+        private Animator _animator;
+        private bool _die;
+        private bool _isDead;
+        private bool _attack;
+        private bool _isAttacking;
 
         private void Start()
         {
             // get the components on the object we need ( should not be null due to require component so no need to check )
-            agent = GetComponentInChildren<NavMeshAgent>();
-            character = GetComponent<ThirdPersonCharacter>();
+            Agent = GetComponentInChildren<NavMeshAgent>();
+            Character = GetComponent<ThirdPersonCharacter>();
+            _animator = Character.GetComponent<Animator>();
 
-	        agent.updateRotation = false;
-	        agent.updatePosition = true;
+            Agent.updateRotation = false;
+	        Agent.updatePosition = true;
         }
-
 
         private void Update()
         {
-            if (target != null)
-                agent.SetDestination(target.position);
+            if (_isAttacking)
+            {
+                _animator.SetFloat("Attacking", Time.deltaTime);
+            }
+            if (Target != null)
+                Agent.SetDestination(Target.position);
 
-            if (agent.remainingDistance > agent.stoppingDistance)
-                character.Move(agent.desiredVelocity, false, false);
+            if (Agent.remainingDistance > Agent.stoppingDistance)
+                Character.Move(Agent.desiredVelocity, false, false);
             else
-                character.Move(Vector3.zero, false, false);
+            {
+                Character.Move(Vector3.zero, false, false);
+            }
         }
 
+        public void Attack()
+        {
+            _animator.SetTrigger("IsAttacking");
+            _isAttacking = true;
+        }
+
+        public void Die()
+        {
+            _animator.SetTrigger("Death");
+            _isDead = true;
+        }
 
         public void SetTarget(Transform target)
         {
-            this.target = target;
+            Target = target;
         }
     }
 }

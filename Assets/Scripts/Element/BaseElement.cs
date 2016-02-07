@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Status;
-using Assets.Utils;
 using System.Collections;
+using Assets.Scripts.Utils;
 using UnityEngine;
 
 namespace Assets.Scripts.Element
@@ -10,7 +10,8 @@ namespace Assets.Scripts.Element
         [SerializeField] protected GameObject ElementHand;
         [SerializeField] protected GameObject Spell;
         [SerializeField] protected float SpellCost;
-        [SerializeField] private Mana _mana;
+
+        private Mana _mana;
 
         void Start()
         {
