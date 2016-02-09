@@ -5,6 +5,7 @@ namespace Assets.Mixamo.Galtrilian.Scripts
     public class GaltrilianHealth : MonoBehaviour
     {
         [SerializeField] private Transform _healthBar;
+        [SerializeField] private AnimationClip _animationClip;
 
         private Animator _animator;
 
@@ -19,6 +20,7 @@ namespace Assets.Mixamo.Galtrilian.Scripts
         private bool _isDead;
         private bool _isSinking;
         private float _sinkSpeed = 1f;
+        private float _deadTimer;
 
         // Use this for initialization
         void Start()
@@ -30,9 +32,11 @@ namespace Assets.Mixamo.Galtrilian.Scripts
         // Update is called once per frame
         void Update()
         {
-            if (_isDead && _isSinking)
+            if (_isDead)
             {
-                transform.Translate(-Vector3.up * _sinkSpeed * Time.deltaTime);
+                _deadTimer += Time.deltaTime;
+                if (_deadTimer > _animationClip.length)
+                    transform.Translate(-Vector3.up * _sinkSpeed * Time.deltaTime);
             }
             else
             {
@@ -89,7 +93,7 @@ namespace Assets.Mixamo.Galtrilian.Scripts
             GetComponent<NavMeshAgent>().enabled = false;
             GetComponent<Rigidbody>().isKinematic = true;
             _isSinking = true;
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, _animationClip.length + 3f);
         }
     }
 }
