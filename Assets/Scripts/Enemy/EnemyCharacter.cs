@@ -60,7 +60,6 @@ namespace Assets.Scripts.Enemy
 
             ApplyExtraTurnRotation();
 
-
             // control and velocity handling is different when grounded and airborne:
             if (_isGrounded)
             {

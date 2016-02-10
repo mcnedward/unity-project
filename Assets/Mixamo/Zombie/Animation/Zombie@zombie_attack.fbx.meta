@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: cfca765143643cb48ae21e824c700611
-timeCreated: 1454983429
+guid: 8a5ff9eb663c0474c8fe0805c3670a90
+timeCreated: 1455059222
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -187,7 +187,7 @@ ModelImporter:
     400176: Zombie:TongueBack
     400178: Zombie:TongueTip
     400180: //RootNode
-    7400000: mixamo.com
+    7400000: zombie_attack
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -209,7 +209,217 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: zombie_attack
+      takeName: mixamo.com
+      firstFrame: 0
+      lastFrame: 79
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Zombie:Hips
+        weight: 1
+      - path: Zombie:Hips/Zombie:LeftUpLeg
+        weight: 1
+      - path: Zombie:Hips/Zombie:LeftUpLeg/Zombie:LeftLeg
+        weight: 1
+      - path: Zombie:Hips/Zombie:LeftUpLeg/Zombie:LeftLeg/Zombie:LeftFoot
+        weight: 1
+      - path: Zombie:Hips/Zombie:LeftUpLeg/Zombie:LeftLeg/Zombie:LeftFoot/Zombie:LeftToeBase
+        weight: 1
+      - path: Zombie:Hips/Zombie:LeftUpLeg/Zombie:LeftLeg/Zombie:LeftFoot/Zombie:LeftToeBase/Zombie:LeftFootToeBase_End
+        weight: 1
+      - path: Zombie:Hips/Zombie:RightUpLeg
+        weight: 1
+      - path: Zombie:Hips/Zombie:RightUpLeg/Zombie:RightLeg
+        weight: 1
+      - path: Zombie:Hips/Zombie:RightUpLeg/Zombie:RightLeg/Zombie:RightFoot
+        weight: 1
+      - path: Zombie:Hips/Zombie:RightUpLeg/Zombie:RightLeg/Zombie:RightFoot/Zombie:RightToeBase
+        weight: 1
+      - path: Zombie:Hips/Zombie:RightUpLeg/Zombie:RightLeg/Zombie:RightFoot/Zombie:RightToeBase/Zombie:RightFootToeBase_End
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandIndex1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandIndex1/Zombie:LeftHandIndex2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandIndex1/Zombie:LeftHandIndex2/Zombie:LeftHandIndex3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandIndex1/Zombie:LeftHandIndex2/Zombie:LeftHandIndex3/Zombie:LeftHandIndex4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandMiddle1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandMiddle1/Zombie:LeftHandMiddle2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandMiddle1/Zombie:LeftHandMiddle2/Zombie:LeftHandMiddle3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandMiddle1/Zombie:LeftHandMiddle2/Zombie:LeftHandMiddle3/Zombie:LeftHandMiddle4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandPinky1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandPinky1/Zombie:LeftHandPinky2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandPinky1/Zombie:LeftHandPinky2/Zombie:LeftHandPinky3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandPinky1/Zombie:LeftHandPinky2/Zombie:LeftHandPinky3/Zombie:LeftHandPinky4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandRing1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandRing1/Zombie:LeftHandRing2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandRing1/Zombie:LeftHandRing2/Zombie:LeftHandRing3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandRing1/Zombie:LeftHandRing2/Zombie:LeftHandRing3/Zombie:LeftHandRing4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandThumb1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandThumb1/Zombie:LeftHandThumb2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandThumb1/Zombie:LeftHandThumb2/Zombie:LeftHandThumb3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:LeftShoulder/Zombie:LeftArm/Zombie:LeftForeArm/Zombie:LeftHand/Zombie:LeftHandThumb1/Zombie:LeftHandThumb2/Zombie:LeftHandThumb3/Zombie:LeftHandThumb4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:HeadTop_End
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:JawEND
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:LeftLipCorner
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:LeftLipLower
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:RightLipCorner
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:RightLipLower
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:TongueBack
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:Jaw/Zombie:TongueTip
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftCheek
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftEye
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftEyelidLower
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftEyelidUpper
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftInnerBrow
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftIOuterBrow
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftLipUpper
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:LeftNostril
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightCheek
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightEye
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightEyelidLower
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightEyelidUpper
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightInnerBrow
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightIOuterBrow
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightLipUpper
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:Neck/Zombie:Neck1/Zombie:Head/Zombie:RightNostril
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandIndex1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandIndex1/Zombie:RightHandIndex2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandIndex1/Zombie:RightHandIndex2/Zombie:RightHandIndex3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandIndex1/Zombie:RightHandIndex2/Zombie:RightHandIndex3/Zombie:RightHandIndex4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandMiddle1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandMiddle1/Zombie:RightHandMiddle2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandMiddle1/Zombie:RightHandMiddle2/Zombie:RightHandMiddle3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandMiddle1/Zombie:RightHandMiddle2/Zombie:RightHandMiddle3/Zombie:RightHandMiddle4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandPinky1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandPinky1/Zombie:RightHandPinky2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandPinky1/Zombie:RightHandPinky2/Zombie:RightHandPinky3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandPinky1/Zombie:RightHandPinky2/Zombie:RightHandPinky3/Zombie:RightHandPinky4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandRing1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandRing1/Zombie:RightHandRing2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandRing1/Zombie:RightHandRing2/Zombie:RightHandRing3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandRing1/Zombie:RightHandRing2/Zombie:RightHandRing3/Zombie:RightHandRing4
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandThumb1
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandThumb1/Zombie:RightHandThumb2
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandThumb1/Zombie:RightHandThumb2/Zombie:RightHandThumb3
+        weight: 1
+      - path: Zombie:Hips/Zombie:Spine/Zombie:Spine1/Zombie:Spine2/Zombie:RightShoulder/Zombie:RightArm/Zombie:RightForeArm/Zombie:RightHand/Zombie:RightHandThumb1/Zombie:RightHandThumb2/Zombie:RightHandThumb3/Zombie:RightHandThumb4
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

@@ -2,15 +2,15 @@
 
 namespace Assets.Scripts.Enemy
 {
-    [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(EnemyCharacter))]
+    [RequireComponent(typeof (NavMeshAgent))]
+    [RequireComponent(typeof (EnemyCharacter))]
     public class EnemyAIController : MonoBehaviour
     {
-        public NavMeshAgent Agent;
-        public EnemyCharacter Character;
         public GameObject Player;
         public AnimationClip AttackAnimation;
 
+        private NavMeshAgent _agent;
+        private EnemyCharacter _character;
         private EnemyHealth _health;
         private float _timeBetweenAttack;
         private float _timer;
@@ -19,40 +19,36 @@ namespace Assets.Scripts.Enemy
         // Use this for initialization
         void Start()
         {
-            Agent = GetComponentInChildren<NavMeshAgent>();
-            Character = GetComponentInChildren<EnemyCharacter>();
-            _health = Character.GetComponent<EnemyHealth>();
+            _agent = GetComponent<NavMeshAgent>();
+            _character = GetComponent<EnemyCharacter>();
+            _health = _character.GetComponent<EnemyHealth>();
 
             // Time between an attack is the length of time it takes for the animation to complete
             // This is divided by 2 here because the Attacking state doubles the speed of the animation, so that needs to be adjusted here too
             _timeBetweenAttack = (AttackAnimation.length / 2) / 4f;
-            _timer = _timeBetweenAttack;
 
-            Agent.updateRotation = false;
-            Agent.updatePosition = true;
+            _agent.updateRotation = false;
+            _agent.updatePosition = true;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (_health.IsDead()) return;
-            if (Player.transform != null)
-            {
-                var target = Player.transform.position;
-                Agent.SetDestination(target);
-            }
+            if (_health.IsDead() || Player.transform == null) return;
+            var target = Player.transform.position;
+            _agent.SetDestination(target);
 
             // Handle jumps here?
-            if (Agent.remainingDistance > Agent.stoppingDistance && !_attacking)
+            if (_agent.remainingDistance >= _agent.stoppingDistance && !_attacking)
             {
-                Agent.Resume();
-                Character.Move(Agent.desiredVelocity, false);
-                Character.SetAttacking(false);
+                _agent.Resume();
+                _character.Move(_agent.desiredVelocity, false);
+                _character.SetAttacking(false);
             }
             else
             {
-                Agent.Stop();
-                Character.Move(Vector3.zero, false);
+                _agent.Stop();
+                _character.Move(Vector3.zero, false);
 
                 HandleAttack();
                 UpdateRotation();
@@ -68,31 +64,30 @@ namespace Assets.Scripts.Enemy
             if (_timer >= _timeBetweenAttack)
             {
                 _attacking = true;
-                Character.SetAttacking(true);
+                _character.SetAttacking(true);
                 _timer = 0;
             }
             else
-            {
-                Character.SetAttacking(false);
-            }
+                _attacking = false;
         }
 
         private void UpdateRotation()
         {
             var targetPosition = Camera.main.transform.position;
-            targetPosition.y = Character.transform.position.y;
-            Character.transform.LookAt(targetPosition);
+            targetPosition.y = _character.transform.position.y;
+            _character.transform.LookAt(targetPosition);
         }
 
         private float _deceleration = 60f;
         private float _closeEnough = 4f;
+
         private void AdjustSliding()
         {
-            if (Agent.hasPath)
+            if (_agent.hasPath)
             {
-                Agent.acceleration = (Agent.remainingDistance < _closeEnough)
+                _agent.acceleration = (_agent.remainingDistance < _closeEnough)
                     ? _deceleration
-                    : Agent.acceleration;
+                    : _agent.acceleration;
             }
         }
 

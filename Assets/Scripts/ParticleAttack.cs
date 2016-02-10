@@ -1,4 +1,4 @@
-﻿using Assets.Mixamo.Galtrilian.Scripts;
+﻿using Assets.Scripts.Enemy;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -6,7 +6,7 @@ namespace Assets.Scripts
     public class ParticleAttack : MonoBehaviour
     {
         private GameObject[] _galtrilians;
-        private GaltrilianHealth[] _healthObjects;
+        private EnemyHealth[] _healthObjects;
 
         private float _timeBetweenAttack = 0.8f;
         private float _timer;
@@ -14,7 +14,7 @@ namespace Assets.Scripts
 
         void OnTriggerEnter(Collider other)
         {
-            _healthObjects = FindObjectsOfType<GaltrilianHealth>();
+            _healthObjects = FindObjectsOfType<EnemyHealth>();
             foreach (var health in _healthObjects)
             {
                 if (other.gameObject == health.gameObject)
@@ -24,7 +24,7 @@ namespace Assets.Scripts
 
         void OnTriggerExit(Collider other)
         {
-            _healthObjects = FindObjectsOfType<GaltrilianHealth>();
+            _healthObjects = FindObjectsOfType<EnemyHealth>();
             foreach (var health in _healthObjects)
             {
                 if (other.gameObject == health.gameObject)
