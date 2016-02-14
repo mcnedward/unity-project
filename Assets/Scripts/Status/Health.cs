@@ -48,5 +48,10 @@ namespace Assets.Scripts.Status
             _currentHealth -= damage;
             _damaged = true;
         }
+
+        public bool IsPlayerDead()
+        {
+            return _currentHealth == 0;
+        }
     }
 }

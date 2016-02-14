@@ -32,6 +32,7 @@ namespace Assets.Scripts.Enemy
         private CapsuleCollider _capsule;
         private bool _attacking;
 
+
         // Use this for initialization
         void Start()
         {
@@ -88,7 +89,7 @@ namespace Assets.Scripts.Enemy
             if (_isGrounded && move.magnitude > 0)
                 _animator.speed = m_AnimSpeedMultiplier;
             else
-                // don't use that while airborne
+            // don't use that while airborne
                 _animator.speed = 1;
         }
 
@@ -143,7 +144,8 @@ namespace Assets.Scripts.Enemy
 #endif
             // 0.1f is a small offset to start the ray from inside the character
             // it is also good to note that the transform position in the sample assets is at the base of the character
-            if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+            if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo,
+                m_GroundCheckDistance))
             {
                 _groundNormal = hitInfo.normal;
                 _isGrounded = true;

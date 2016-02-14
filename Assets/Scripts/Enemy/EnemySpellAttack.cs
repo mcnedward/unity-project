@@ -8,14 +8,13 @@ namespace Assets.Scripts.Enemy
     {
         public GameObject Spell;
         public float SpellCost;
+        public Transform SpellHand;
 
         private Transform _enemy;
-        private Transform _spellHand;
 
         protected override void Initialize()
         {
             _enemy = GetComponent<EnemyCharacter>().transform;
-            _spellHand = GameObject.FindGameObjectWithTag("EnemySpellHand").transform;
         }
 
         protected override void Attack()
@@ -30,7 +29,7 @@ namespace Assets.Scripts.Enemy
             yield return new WaitForSeconds(waitForSpellAnimation);
 
             // Get position of enemy hands and enemy rotation
-            var position = _spellHand.position;
+            var position = SpellHand.position;
             var rotation = _enemy.rotation;
 
             var shot = Instantiate(Spell, position, rotation);

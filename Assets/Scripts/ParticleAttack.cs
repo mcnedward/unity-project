@@ -13,7 +13,6 @@ namespace Assets.Scripts
 
         void OnParticleCollision(GameObject other)
         {
-            print(this + " collides with " + other);
             var player = GameObject.FindGameObjectWithTag("Player");
             if (other.gameObject == player)
             {
@@ -24,7 +23,6 @@ namespace Assets.Scripts
 
         void OnTriggerEnter(Collider other)
         {
-            print(this + " collides with " + other);
             if (_playerAttack)
             {
                 var enemies = GameObject.FindGameObjectsWithTag("Enemy");

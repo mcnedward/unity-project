@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Manager;
+using UnityEngine;
 
 namespace Assets.Scripts.Enemy
 {
@@ -7,6 +8,7 @@ namespace Assets.Scripts.Enemy
         [SerializeField] private Transform _healthBar;
         [SerializeField] private AnimationClip _deathAnimation;
 
+        private EnemyManager _enemyManager;
         private Animator _animator;
 
         private float _maxHealth = 1f;
@@ -25,6 +27,7 @@ namespace Assets.Scripts.Enemy
         // Use this for initialization
         void Start()
         {
+            _enemyManager = FindObjectOfType<EnemyManager>();
             _animator = GetComponent<Animator>();
             _currentHealth = _maxHealth;
         }
@@ -83,7 +86,6 @@ namespace Assets.Scripts.Enemy
         {
             _takingDamage = takingDamage;
             _damageAmount = damage;
-            print("Notify damage");
         }
 
         public bool IsDead()
@@ -97,6 +99,7 @@ namespace Assets.Scripts.Enemy
             GetComponent<Rigidbody>().isKinematic = true;
             _isSinking = true;
             Destroy(gameObject, _deathAnimation.length + 3f);
+            _enemyManager.KillEnemy();
         }
     }
 }

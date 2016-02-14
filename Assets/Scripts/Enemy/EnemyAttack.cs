@@ -7,8 +7,8 @@ namespace Assets.Scripts.Enemy
     public abstract class EnemyAttack : MonoBehaviour
     {
         public float Damage = 0.1f;
-        public GameObject Player;
         public AnimationClip AnimationClip;
+        public GameObject Player;
 
         // Health script of the player
         protected Health Health;
