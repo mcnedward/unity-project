@@ -43,13 +43,14 @@ namespace Assets.Scripts.Enemy
                 if (_healthBar == null || _isDead) return;
 
                 if (_currentHealth <= 0)
-                {
                     Death();
-                }
 
                 if (_damaged)
                 {
                     _currentHealth -= _damageAmount;
+                    if (_currentHealth < 0)
+                        _currentHealth = 0;
+                    _damageAmount = 0;
                     var currentScale = _healthBar.localScale;
                     _healthBar.localScale = new Vector3(_currentHealth, currentScale.y, currentScale.z);
                     _damaged = false;
@@ -58,16 +59,16 @@ namespace Assets.Scripts.Enemy
                 _timer += Time.deltaTime;
                 if (_timer >= _timeBetweenAttack && _takingDamage)
                 {
-                    TakeDamage(0.5f);
+                    TakeDamage();
                     _timer = 0;
+                    _takingDamage = false;
                 }
             }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage()
         {
             if (_isDead) return;
-            _damageAmount = damage;
             _damaged = true;
         }
 
@@ -78,9 +79,11 @@ namespace Assets.Scripts.Enemy
             StartSinking();
         }
 
-        public void NotifyDamage(bool takingDamage)
+        public void NotifyDamage(bool takingDamage, float damage)
         {
             _takingDamage = takingDamage;
+            _damageAmount = damage;
+            print("Notify damage");
         }
 
         public bool IsDead()

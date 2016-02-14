@@ -14,6 +14,7 @@ namespace Assets.Scripts.Enemy
         protected Health Health;
 
         private Animator _animator;
+        private EnemyHealth _enemyHealth;
         private float _timer;
         private float _timeBetweenAttacks;
         private bool _allowAttack;
@@ -23,6 +24,7 @@ namespace Assets.Scripts.Enemy
         {
             Health = Player.GetComponent<Health>();
             _animator = GetComponent<Animator>();
+            _enemyHealth = GetComponent<EnemyHealth>();
             _timeBetweenAttacks = AnimationClip.length;
             _timer = _timeBetweenAttacks;
 
@@ -32,7 +34,7 @@ namespace Assets.Scripts.Enemy
         void Update()
         {
             _timer += Time.deltaTime;
-            if (_allowAttack && _timer >= _timeBetweenAttacks)
+            if (_allowAttack && _timer >= _timeBetweenAttacks && !_enemyHealth.IsDead())
             {
                 Attack();
                 _animator.SetBool("Attacking", true);

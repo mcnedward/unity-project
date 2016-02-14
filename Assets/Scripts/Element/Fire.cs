@@ -7,7 +7,8 @@ namespace Assets.Scripts.Element
     {
         protected override IEnumerator Cast(Vector3 position)
         {
-            var shot = Instantiate(Spell, position, Quaternion.identity);
+            var shot = (GameObject) Instantiate(Spell, position, Quaternion.identity);
+            shot.GetComponent<ParticleAttack>().SetPlayerAttack(true);
             var duration = Spell.GetComponent<ParticleSystem>().duration;
             yield return new WaitForSeconds(duration);
             Destroy(shot);

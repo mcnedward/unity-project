@@ -14,7 +14,7 @@ namespace Assets.Scripts.Element
         [SerializeField] private Camera _handCamera;
         [SerializeField] private float _rayCastRange = 100f;
         [SerializeField] private Enchant _enchant;
-
+        [SerializeField] private LayerMask _layerMask;
         [SerializeField] private BaseElement _fire;
         [SerializeField] private BaseElement _ice;
         [SerializeField] private BaseElement _bolt;
@@ -87,7 +87,7 @@ namespace Assets.Scripts.Element
             if (Input.GetButtonUp("Fire1") && _actionDown)
             {
                 _actionDown = false;
-                if (Physics.Raycast(ray, out hit, _rayCastRange))
+                if (Physics.Raycast(ray, out hit, _rayCastRange, _layerMask))
                 {
                     if (hit.distance != 0)
                     {

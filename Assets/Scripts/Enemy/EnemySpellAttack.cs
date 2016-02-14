@@ -33,7 +33,7 @@ namespace Assets.Scripts.Enemy
             var position = _spellHand.position;
             var rotation = _enemy.rotation;
 
-            var shot = (GameObject) Instantiate(Spell, position, rotation);
+            var shot = Instantiate(Spell, position, rotation);
             var duration = Spell.GetComponent<ParticleSystem>().duration;
             yield return new WaitForSeconds(duration);
             Destroy(shot);

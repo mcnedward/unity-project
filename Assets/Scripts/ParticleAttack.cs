@@ -8,24 +8,36 @@ namespace Assets.Scripts
     public class ParticleAttack : MonoBehaviour
     {
         public float SpellDamage;
-        public bool AttackPlayer;
+
+        private bool _playerAttack;
 
         void OnParticleCollision(GameObject other)
         {
-            if (AttackPlayer)
+            print(this + " collides with " + other);
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (other.gameObject == player)
             {
-                var health = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
-                if (other.gameObject == health.gameObject)
-                    health.TakeDamage(SpellDamage);
+                var health = player.GetComponent<Health>();
+                health.TakeDamage(SpellDamage);
             }
-            else
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            print(this + " collides with " + other);
+            if (_playerAttack)
             {
-                var healthObjects = FindObjectsOfType<EnemyHealth>();
-                foreach (var health in healthObjects.Where(health => other.gameObject == health.gameObject))
+                var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                foreach (var enemy in enemies.Where(enemy => other.gameObject == enemy))
                 {
-                    health.NotifyDamage(true);
+                    enemy.GetComponent<EnemyHealth>().NotifyDamage(true, SpellDamage);
                 }
             }
+        }
+
+        public void SetPlayerAttack(bool playerAttack)
+        {
+            _playerAttack = playerAttack;
         }
     }
 }
