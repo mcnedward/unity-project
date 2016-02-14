@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Status;
 using System.Collections;
+using Assets.Scripts.Enemy;
 using Assets.Scripts.Utils;
 using UnityEngine;
 

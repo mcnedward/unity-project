@@ -78,11 +78,10 @@ namespace Assets.Scripts.Enemy
         {
             // update the animator parameters
             _animator.SetFloat("Forward", _forwardAmount, 0.1f, Time.deltaTime);
-            _animator.SetBool("OnGround", _isGrounded);
-            if (!_isGrounded)
-            {
-                _animator.SetBool("Jump", true);
-            }
+//            if (!_isGrounded)
+//            {
+//                _animator.SetBool("Jump", true);
+//            }
 
             // the anim speed multiplier allows the overall speed of walking/running to be tweaked in the inspector,
             // which affects the movement speed because of the root motion.

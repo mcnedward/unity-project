@@ -1,34 +1,30 @@
-﻿using Assets.Scripts.Enemy;
+﻿using System.Linq;
+using Assets.Scripts.Enemy;
+using Assets.Scripts.Status;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class ParticleAttack : MonoBehaviour
     {
-        private GameObject[] _galtrilians;
-        private EnemyHealth[] _healthObjects;
+        public float SpellDamage;
+        public bool AttackPlayer;
 
-        private float _timeBetweenAttack = 0.8f;
-        private float _timer;
-        private bool _inParticle;
-
-        void OnTriggerEnter(Collider other)
+        void OnParticleCollision(GameObject other)
         {
-            _healthObjects = FindObjectsOfType<EnemyHealth>();
-            foreach (var health in _healthObjects)
+            if (AttackPlayer)
             {
+                var health = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
                 if (other.gameObject == health.gameObject)
-                    health.NotifyDamage(true);
+                    health.TakeDamage(SpellDamage);
             }
-        }
-
-        void OnTriggerExit(Collider other)
-        {
-            _healthObjects = FindObjectsOfType<EnemyHealth>();
-            foreach (var health in _healthObjects)
+            else
             {
-                if (other.gameObject == health.gameObject)
-                    health.NotifyDamage(false);
+                var healthObjects = FindObjectsOfType<EnemyHealth>();
+                foreach (var health in healthObjects.Where(health => other.gameObject == health.gameObject))
+                {
+                    health.NotifyDamage(true);
+                }
             }
         }
     }
